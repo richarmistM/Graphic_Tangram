@@ -60,6 +60,38 @@
 - **构建工具：CMake 3.16+**
 - **编译器：MSVC / MinGW / GCC / Clang**
 
+  **📂 项目结构概览**
+
+
+```text
+Graphic_Tangram/
+├── CMakeLists.txt              # CMake 构建配置文件
+├── GraphicEngine_zh_CN.ts      # 国际化翻译文件
+├── main.cpp                    # 应用程序入口
+├── Core/                       # [核心架构层]
+│   ├── basetool.h              # 工具抽象基类 (定义鼠标事件接口)
+│   ├── canvaswidget.* # 画布组件 (负责 QImage 显示与重绘定时器)
+│   ├── drawengine.* # 绘图引擎 (底层像素级算法库：画线、填充、裁剪)
+│   └── mainwindow.* # 主窗口 (UI 布局、工具栏信号槽连接)
+├── Shapes/                     # [图元数据层]
+│   ├── shape.h                 # 图元基类 (定义绘制接口、颜色、线宽)
+│   ├── arcshape.* # 圆弧/圆图元 (中点圆算法数据)
+│   ├── lineshape.* # 直线图元 (两点数据)
+│   ├── polygonshape.* # 多边形图元 (顶点集合数据)
+│   └── rasterfillshape.* # 光栅填充图元 (扫描线种子填充数据)
+├── Tools/                      # [交互控制层]
+│   ├── arctool.* # 圆弧绘制工具 (鼠标拖拽生成圆弧)
+│   ├── cliptool.* # 裁剪工具 (Cohen-Sutherland/多边形裁剪交互)
+│   ├── filltool.* # 填充工具 (油漆桶交互逻辑)
+│   ├── linetool.* # 直线绘制工具
+│   ├── polygontool.* # 多边形绘制工具
+│   └── selecttool.* # 选择/移动/编辑工具
+└── Tangram/                    # [七巧板游戏模块]
+    ├── tangramgame.* # 游戏逻辑控制器 (关卡管理、胜利判定)
+    ├── tangrampiece.* # 七巧板拼板图元 (继承自 Shape)
+    └── tangramtool.* # 七巧板操作工具 (旋转、吸附逻辑)
+```
+
 **🖥️ 核心算法实现原理**
 
 本项目不依赖高层绘图 API (如 QPainter::drawLine 等) 进行渲染，而是基于计算机图形学底层原理实现了核心图元的生成与处理。以下是关键算法的实现细节：
